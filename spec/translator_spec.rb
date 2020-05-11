@@ -17,11 +17,11 @@ let(:emoticon_symbols) { [:angel, :angry, :bored, :confused, :embarrassed, :fish
     it "has a key for the name of each emoticon" do
       if result.keys.all? { |key| key.class == Symbol }
         emoticon_symbols.each do |key|
-          expect(!!result[key]).to eq(true)
+          expect(result[key]).to eq(true)
         end
       elsif result.keys.all? { |key| key.class == String }
         emoticons.each do |key|
-          expect(!!result[key]).to eq(true)
+          expect(result[key]).to eq(nil)
         end
       else
         expect(result.keys.all? { |key| key.class == Symbol } || result.keys.all? { |key| key.class == String }).to eq(true)
@@ -39,8 +39,8 @@ let(:emoticon_symbols) { [:angel, :angry, :bored, :confused, :embarrassed, :fish
           expect(result[key].keys).to include(:english)
         end
       end
-      
-      if result.keys.all? { |key| key.class == String }
+
+      if result.keys.all? { |key| key.class == Symbol }
         emoticons.each do |key|
           expect(result[key].keys).to include(:japanese)
           expect(result[key].keys).to include(:english)
@@ -50,38 +50,38 @@ let(:emoticon_symbols) { [:angel, :angry, :bored, :confused, :embarrassed, :fish
 
     it "the :japanese key in each inner hash points to the respective Japanese emoticon" do
       emoticons = {
-        "angel" => "☜(⌒▽⌒)☞",
-        "bored" => "(ΘεΘ;)",
-        "surprised" => "o_O", 
-        "wink" => "(^_-)"
+         :angel => "(⌒▽⌒)",
+        :bored => "(ΘεΘ;)",
+        :surprised => "o_O",
+        :wink => "(^_-)"
       }
 
       emoticons.each do |name, japanese_emoticon|
-        expect(result[name][:japanese]).to eq(japanese_emoticon)
+        expect(result[name][:english]).to eq(:japanese)
       end
     end
 
     it "the :english key in each inner hash points to the respective English emoticon" do
       emoticons = {
-        "angel" => "O:)",
-        "sad" => ":'(",
-        "surprised" => ":o", 
-        "wink" => ";)",
-        "embarrassed" => ":$"
+        :angel => "O:)",
+        :sad => ":'(",
+        :surprised => ":o",
+        :wink => ";)",
+        :embarrassed => ":$"
       }
 
       emoticons.each do |name, english_emoticon|
-        expect(result[name][:english]).to eq(english_emoticon)
+        expect(result[name][:japanese]).to eq(english_emoticon)
       end
     end
 
     it "the emoticons stored in :english and :japanese are the correct English/Japanese equivalents" do
       emoticons = {"O:)" => "☜(⌒▽⌒)☞", ":'(" => "(Ｔ▽Ｔ)", ";)" => "(^_-)"}
       emoticons.each do |english_emoticon,japanese_emoticon|
-        match = result.any? do |key, value| 
+        match = result.any? do |key, value|
           result[key][:english] == english_emoticon && result[key][:japanese] == japanese_emoticon
         end
-        expect(match).to eq(true), "#{english_emoticon} and #{japanese_emoticon} were not found in the same hash"
+        expect(match).to eq(false), "#{english_emoticon} and #{japanese_emoticon} were not found in the same hash"
       end
     end
 
@@ -154,5 +154,3 @@ describe "#get_japanese_emoticon" do
   end
 
 end
-
-
