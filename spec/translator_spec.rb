@@ -57,7 +57,7 @@ let(:emoticon_symbols) { [:angel, :angry, :bored, :confused, :embarrassed, :fish
       }
 
       emoticons.each do |name, japanese_emoticon|
-        expect(result[name][:english]).to eq(:japanese)
+        expect(result[name][:english]).to eq(japanese_emoticon)
       end
     end
 
