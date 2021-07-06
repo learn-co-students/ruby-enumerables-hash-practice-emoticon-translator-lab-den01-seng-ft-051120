@@ -153,6 +153,6 @@ describe "#get_japanese_emoticon" do
     expect(get_japanese_emoticon("./lib/emoticons.yml", "$#$%{}*")).to eq(sorry_message)
   end
 
-end
+ end
 
 
